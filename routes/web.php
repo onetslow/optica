@@ -17,8 +17,8 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('categories.show');
 
 // Products
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::resource('products', ProductController::class);
+
 
 // Orders
 Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
