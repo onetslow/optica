@@ -28,9 +28,8 @@
                         @else
                             <p>Нет категории</p>
                         @endif
-
-                        <p><strong>Описание:</strong> {{ $product->description }}</p>
                     </li>
+                    
                     <hr>
                 @endforeach
             </ul>
