@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+       // Связь с заказами (один ко многим)
+       public function orders()
+       {
+           return $this->hasMany(Order::class);
+       }
 }
