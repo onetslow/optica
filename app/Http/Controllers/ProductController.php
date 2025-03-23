@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -78,12 +80,17 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Товар успешно обновлен!');
     }
 
-    // Удаление продукта
-    public function destroy($id)
-    {
-        $product = Product::findOrFail($id);
-        $product->delete();
+    public function destroy(string $id)
+{
+    $product = Product::findOrFail($id);
 
-        return redirect()->route('products.index')->with('success', 'Товар удален!');
+    // Проверяем доступ через определённое правило
+    if (! Gate::allows('destroy-product', $product)) {
+        return redirect()->route('error')->with('message', 'У вас нет прав на удаление этого товара!');
     }
+
+    $product->delete();
+
+    return redirect()->route('products.index')->with('success', 'Товар удалён!');
+}
 }
