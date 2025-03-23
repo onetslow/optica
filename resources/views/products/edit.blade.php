@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактирование товара</title>
     <style>
-        .is-invalid { color: red; } }
+        .is-invalid { color: red; } 
     </style>
 </head>
 <body>

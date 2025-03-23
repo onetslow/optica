@@ -45,5 +45,9 @@
 
     <a href="{{ route('products.create') }}" class="btn-create">Добавить новый товар</a>
 
+    <div>
+    {{ $products->links() }}
+    </div>
+    
 </body>
 </html>

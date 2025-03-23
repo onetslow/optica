@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-        return view('products.index', compact('products'));
+        $perpage = $request ->perpage ?? 2;
+        $products = Product::paginate($perpage)->withQueryString();
+        return view('products.index', compact('products','perpage'));
     }
 
     public function show($id)
