@@ -1,47 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
+@extends('layout')
+
+@section('content')
+    <div class="container mt-4">
         @if ($category)
-            {{ $category->name }}
+            <h2 class="mb-4 text-center">{{ $category->name }}</h2>
+
+            @if ($category->products->count() > 0)
+                <div class="row">
+                    @foreach ($category->products as $product)
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm border-0">
+                                @if ($product->image)
+                                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                @else
+                                    <img src="" class="card-img-top" alt="Нет изображения">
+                                @endif
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">{{ $product->name }}</h5>
+                                    <p class="card-text mb-1">
+                                        <strong>Цена:</strong> {{ number_format($product->price, 2, ',', ' ') }} ₽
+                                    </p>
+                                    <p class="text-muted small mb-3">
+                                        Категория: {{ $product->category->name ?? 'Не указана' }}
+                                    </p>
+                                    <a href="{{ route('products.show', $product->id) }}" class="btn btn-outline-primary mt-auto">Подробнее</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="text-center">Нет товаров в этой категории.</p>
+            @endif
         @else
-            Категория не найдена
-        @endif
-    </title>
-</head>
-<body>
-
-    @if ($category)
-        <h1>{{ $category->name }}</h1>
-
-        @if ($category->products->count() > 0)
-            <ul>
-                @foreach ($category->products as $product)
-                    <li>
-                        <h3>{{ $product->name }}</h3>
-                        <p><strong>Цена:</strong> {{ number_format($product->price, 2, ',', ' ') }} ₽</p>
-
-                        @if ($product->category)
-                            <p><strong>Категория:</strong> {{ $product->category->name }}</p>
-                        @else
-                            <p>Нет категории</p>
-                        @endif
-                    </li>
-                    
-                    <hr>
-                @endforeach
-            </ul>
-        @else
-            <p>Нет товаров в этой категории</p>
+            <h2 class="text-center">Категория не найдена</h2>
         @endif
 
-    @else
-        <h1>Категория не найдена</h1>
-    @endif
-
-    <p><a href="{{ route('categories.index') }}">Назад</a></p>
-
-</body>
-</html>
+        <div class="text-center mt-4">
+            <a href="{{ route('categories.index') }}" class="btn btn-secondary">← Назад к списку категорий</a>
+        </div>
+    </div>
+@endsection

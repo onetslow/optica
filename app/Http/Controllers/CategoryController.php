@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -11,20 +12,22 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $user = Auth::user();
+
+        return view('categories.index', compact('categories','user'));
     }
 
     // Метод для вывода одной категории и связанных с ней продуктов
     public function show($id)
     {
-        // Найти категорию по id
+        $user = Auth::user();
         $category = Category::find($id);
 
-        // Если категория не найдена — показать сообщение об ошибке
         if (!$category) {
             return view('categories.show', [
                 'category' => null,
-                'products' => []
+                'products' => [],
+                'user' => $user 
             ]);
         }
 
@@ -32,6 +35,6 @@ class CategoryController extends Controller
         $products = $category->products;
 
         // Вернуть представление с категорией и её продуктами
-        return view('categories.show', compact('category', 'products'));
+        return view('categories.show', compact('category', 'products', 'user'));
     }
 }

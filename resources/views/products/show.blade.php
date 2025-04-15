@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $product ? $product->name : 'Продукт не найден' }}</title>
-</head>
-<body>
+@extends('layout')
 
+@section('content')
     @if ($product)
         <h1>{{ $product->name }}</h1>
 
@@ -24,7 +18,16 @@
         <h1>Продукт не найден</h1>
     @endif
 
-    <p><a href="{{ route('products.index') }}">Вернуться к товарам</a></p>
+    <p>
+        @if ($user && $user->is_admin)
+            <a href="{{ route('products.index') }}">Вернуться к товарам</a>
+        @elseif ($product && $product->category)
+            <a href="{{ route('categories.show', ['id' => $product->category->id]) }}">
+                Вернуться к категории: {{ $product->category->name }}
+            </a>
+        @else
+            <a href="{{ url('/') }}">Вернуться на главную</a>
+        @endif
+    </p>
 
-</body>
-</html>
+@endsection

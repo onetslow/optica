@@ -30,11 +30,11 @@ class LoginController extends Controller
             
             $request->session()->regenerate();
             
-            return redirect()->intended('/login');
+            return redirect()->intended('/')->with('success', 'Вы успешно вошли в систему');
         }
-        return back()->withErrors([
-            'error' => 'Предоставленные учетные данные не соответствуют нашим записям.',
-        ])->onlyInput('email','password');
+        return back()
+        ->with('message', 'Предоставленные учетные данные не соответствуют нашим записям.')
+        ->onlyInput('email','password');
     }
 
     /**
@@ -46,6 +46,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('login');
+        return redirect('login')->with('success', 'Вы успешно вышли из системы!');
     }
 }

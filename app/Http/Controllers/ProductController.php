@@ -14,34 +14,35 @@ class ProductController extends Controller
     {
         $perpage = $request ->perpage ?? 2;
         $products = Product::paginate($perpage)->withQueryString();
-        return view('products.index', compact('products','perpage'));
+        $user = Auth::user();
+        return view('products.index', compact('products','perpage', 'user'));
     }
 
     public function show($id)
     {
-        // Ищем продукт
         $product = Product::find($id);
+        $user = Auth::user();
 
-        // Проверяем, существует ли он
         if (!$product) {
             return view('products.show', ['product' => null, 'category' => null]);
         }
 
-        // Получаем категорию продукта
         $category = $product->category;
 
-        return view('products.show', compact('product', 'category'));
+        return view('products.show', compact('product', 'category', 'user'));
     }
 
     public function create()
     {
-        $categories = Category::all(); // Для выбора категории в форме
-        return view('products.create', compact('categories'));
+        $categories = Category::all(); 
+        $user = Auth::user();
+        return view('products.create', compact('categories', 'user'));
     }
 
-    // Сохранение нового продукта
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
@@ -54,19 +55,19 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Товар успешно добавлен!');
     }
 
-    // Форма редактирования существующего продукта
     public function edit($id)
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
+        $user = Auth::user();
 
-        return view('products.edit', compact('product', 'categories'));
+        return view('products.edit', compact('product', 'categories', 'user'));
     }
 
-    // Обновление продукта после редактирования
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        $user = Auth::user();
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -83,14 +84,20 @@ class ProductController extends Controller
     public function destroy(string $id)
 {
     $product = Product::findOrFail($id);
+    $user = Auth::user();
 
-    // Проверяем доступ через определённое правило
     if (! Gate::allows('destroy-product', $product)) {
-        return redirect()->route('error')->with('message', 'У вас нет прав на удаление этого товара!');
+        return redirect()->route('products.index')->with('message', 'У вас нет прав на удаление этого товара!');
     }
 
     $product->delete();
 
-    return redirect()->route('products.index')->with('success', 'Товар удалён!');
+    return redirect()->route('products.index')->with('success', 'Товар успешно удалён!');
 }
+    public function home()
+    {
+        $products = Product::latest()->take(6)->get();
+        $user = Auth::user();
+        return view('home', compact('products', 'user'));
+    }
 }

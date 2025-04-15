@@ -1,16 +1,22 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>609-22</title>
-</head>
-<body>
-    <h1>Список категорий:</h1>
-    <ul>
-        @foreach ($categories as $category)
-            <li><a href="{{ route('categories.show', $category->id) }}">{{ $category->name }}</a></li>
-        @endforeach
-    </ul>
-</body>
-</html>
+@extends('layout')
+
+@section('content')
+    <div class="container mt-4">
+        <h2 class="mb-4">Список категорий</h2>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach ($categories as $category)
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $category->name }}</h5>
+                            <a href="{{ route('categories.show', $category->id) }}" class="btn btn-outline-primary mt-2">
+                                Перейти к товарам
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@endsection

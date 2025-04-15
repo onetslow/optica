@@ -11,12 +11,12 @@ class OrderSeeder extends Seeder
     {
         Order::create([
             'user_id' => 1,
-            'order_date' => now(), // ➡️ добавляем дату заказа
+            'order_date' => now(), 
         ]);
 
         Order::create([
             'user_id' => 2,
-            'order_date' => now()->subDays(1), // ➡️ пример с другой датой
+            'order_date' => now()->subDays(1),
         ]);
     }
 }

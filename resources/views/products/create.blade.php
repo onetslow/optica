@@ -1,67 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создать товар</title>
-    <style>
-        .is-invalid { color: red; }
-        .form-group { margin-bottom: 10px; }
-    </style>
-</head>
-<body>
+@extends('layout')
 
-    <h2>Добавление товара</h2>
+@section('content')
 
-    <form method="POST" action="{{ url('products') }}">
-        @csrf
-        
-        {{-- Название товара (Text) --}}
-        <div class="form-group">
-            <label>Наименование:</label><br>
-            <input type="text" name="name" value="{{ old('name') }}">
-            @error('name')
-                <div class="is-invalid">{{ $message }}</div>
-            @enderror
-        </div>
-
-        {{-- Категория (Select) --}}
-        <div class="form-group">
-            <label>Категория:</label><br>
-            <select name="category_id">
-                <option value="">-- выберите категорию --</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div style="width: 100%; max-width: 500px;">
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Пожалуйста, исправьте следующие ошибки:</strong>
+            <ul class="mb-0 mt-2">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
                 @endforeach
-            </select>
-            @error('category_id')
-                <div class="is-invalid">{{ $message }}</div>
-            @enderror
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
         </div>
+    @endif
 
-        {{-- Цена (Number) --}}
-        <div class="form-group">
-            <label>Цена:</label><br>
-            <input type="number" name="price" step="0.01" value="{{ old('price') }}">
-            @error('price')
-                <div class="is-invalid">{{ $message }}</div>
-            @enderror
-        </div>
+        <h2>Добавление товара</h2>
 
-        {{-- Описание (Textarea) --}}
-        <div class="form-group">
-            <label>Описание:</label><br>
-            <textarea name="description">{{ old('description') }}</textarea>
-            @error('description')
-                <div class="is-invalid">{{ $message }}</div>
-            @enderror
-        </div>
+        <form method="POST" action="{{ url('products') }}">
+            @csrf
 
-        <button type="submit">Создать товар</button>
+            <div class="form-group mb-3">
+                <label for="name">Наименование:</label>
+                <input type="text" id="name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}">
+                @error('name')
+                    <div class="is-invalid">{{ $message }}</div>
+                @enderror
+            </div>
 
-    </form>
+            <div class="form-group mb-3">
+                <label for="category_id">Категория:</label>
+                <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror">
+                    <option value="">-- выберите категорию --</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('category_id')
+                    <div class="is-invalid">{{ $message }}</div>
+                @enderror
+            </div>
 
-</body>
-</html>
+            <div class="form-group mb-3">
+                <label for="price">Цена:</label>
+                <input type="number" id="price" class="form-control @error('price') is-invalid @enderror" name="price" step="0.01" value="{{ old('price') }}">
+                @error('price')
+                    <div class="is-invalid">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="description">Описание:</label>
+                <textarea id="description" class="form-control @error('description') is-invalid @enderror" name="description">{{ old('description') }}</textarea>
+                @error('description')
+                    <div class="is-invalid">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-primary">Создать товар</button>
+        </form>
+    </div>
+    </div>
+@endsection
