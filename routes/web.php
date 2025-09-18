@@ -5,7 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LoginController;
-
+use App\Models\Product;
 
 Route::get('/', function () {
     return view('welcome');

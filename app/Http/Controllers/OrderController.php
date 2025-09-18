@@ -15,7 +15,7 @@ class OrderController extends Controller
 
             $orders = Order::with('products', 'user')->get();
         } else {
-            $orders = Order::with('products')->where('user_id', auth()->id())->get();
+            $orders = Order::with('products')->where('user_id', auth::id())->get();
         }
     
         return view('orders.index', compact('orders'));

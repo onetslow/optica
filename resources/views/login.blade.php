@@ -1,16 +1,12 @@
 @extends('layout')
 
 @section('content')
-        @error('error')
-            <div class="text-danger mt-3">
-                {{ $message }}
-            </div>
-        @enderror
+
 <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="card p-4" style="max-width: 400px; width: 100%;">
     @if(!$user)
         <h2>Вход в систему</h2>
-        <form method="POST" action="{{ url('auth') }}">
+        <form method="POST" action="{{ url('auth') }}" novalidate>
             @csrf
 
             <div class="mb-3">
