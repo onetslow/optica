@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     
     Route::get('/orders', [OrderApiController::class, 'index']);
     Route::get('/orders/{id}', [OrderApiController::class, 'show']);
+    Route::post('/categories', [CategoryApiController::class, 'store']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
